@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HeroeModel } from 'src/app/models/heroe.model';
 import { HeroesService } from 'src/app/services/heroes.service';
@@ -14,14 +15,23 @@ export class HeroeComponent implements OnInit {
 
   heroe: HeroeModel = new HeroeModel();
 
-  constructor( private heroeService: HeroesService ) { }
+  constructor( private heroeService: HeroesService, 
+               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 
-    this.heroeService.getHeroes()
-        .subscribe( resp => {
-          console.log(resp);
-        });
+    const id = this.route.snapshot.paramMap.get('id');
+
+    if( id != 'nuevo'){
+
+      this.heroeService.getHeroe( id )
+          .subscribe( (resp: HeroeModel) => {
+            this.heroe = resp;
+            this.heroe.id = id;
+          });
+    }
+
+    console.log(id);
 
   }
 
