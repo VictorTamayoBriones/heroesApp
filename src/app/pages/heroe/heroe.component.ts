@@ -17,6 +17,12 @@ export class HeroeComponent implements OnInit {
   constructor( private heroeService: HeroesService ) { }
 
   ngOnInit(): void {
+
+    this.heroeService.getHeroes()
+        .subscribe( resp => {
+          console.log(resp);
+        });
+
   }
 
 
